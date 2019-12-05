@@ -1,0 +1,48 @@
+body{
+    background-color: #ecf0f5;
+    padding: 0 !important;
+}
+h1{
+    font-size: 24px;
+}
+nav{
+    margin-bottom: 2rem;
+}
+thead{
+    text-align: center;
+}
+tfoot{
+    text-align: center;
+}
+tbody{
+    text-align: center;
+}
+.active{
+    color: green;
+}
+.disabled{
+    color: red;
+}
+.bg-blue{
+    background-color: #3c8dbc;
+}
+.fas{
+    cursor: pointer;
+}
+.fa-edit{
+    color: #4da74d;
+    transition: 0.5s color ease-in-out;
+}
+.fa-edit:hover{
+    color: green;
+}
+.fa-trash{
+    color: #e97a50;
+    transition: 0.5s color ease-in-out;
+}
+.fa-trash:hover{
+    color: #dc3545;
+}
+.card{
+    margin-top: 1.5rem;
+}
