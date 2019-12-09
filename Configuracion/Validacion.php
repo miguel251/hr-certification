@@ -32,4 +32,17 @@ class Validacion
             return 0;
         }
     }
+
+    //Valida si el usuario tiene un usuario en el ERP 
+    public function validarUsuario($id_empleado){
+        
+        $id_empleado = filter_var($id_empleado, FILTER_SANITIZE_NUMBER_INT);
+        $empleado = new Empleado();
+        $vEmpleado = $empleado->findUsuario($id_empleado);
+        if(count($vEmpleado) > 0){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
 }

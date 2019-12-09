@@ -219,4 +219,21 @@ class Empleado
 
         return $empleado;
     }
+
+    //Busca usuario ERP por id de empleado
+    public function findUsuario($id_empleado){
+
+        $conn = $this->conn->conexion();
+        $sql = 'SELECT usuario.id_usuario, usuario.nombre_usuario 
+        FROM empleado
+        INNER JOIN usuario
+        ON usuario.id_empleado = empleado.id_empleado
+        WHERE empleado.id_empleado = :id_empleado';
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(":id_empleado", $id_empleado);
+        $stmt->execute();
+        $empleado = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        return $empleado;
+    }
 }

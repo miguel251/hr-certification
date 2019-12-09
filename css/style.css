@@ -110,3 +110,7 @@ nav h1{
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
 }
+
+.fa-share-alt{
+    color: #4c6ef5;
+}

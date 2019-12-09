@@ -1,4 +1,23 @@
 <?php require_once ($_SERVER["DOCUMENT_ROOT"] . '/jmdistributions/Hr/head.php');?>
+<?php
+require_once ($_SERVER["DOCUMENT_ROOT"] . '/jmdistributions/Hr/Configuracion/Validacion.php');
+if(isset($_GET['id']))
+{
+    $id_empleado = $_GET['id'];
+    $id_supervisor = $_SESSION ["SES_ID_EMPLEADO"];
+    $compartir = false;
+    $validar = new Validacion();
+    if(!$validar->validarEmpleado($id_empleado, $id_supervisor)){
+        header('Location: ../../../Archivos/Colaboradores.php');
+        exit();
+    }else if(!$validar->validarUsuario($id_empleado)){
+        $compartir = true;
+    }
+}else{
+    header('Location: ../../../Archivos/Colaboradores.php');
+    exit();
+}
+?>
 <header class="container-fluid">
     <div class="card">
         <div class="row">
@@ -39,7 +58,7 @@
         </div>
        <div class="card">
             <div v-for="e in empleado">
-                <p><strong>{{e.nombre  + ' ' + e.apellido_paterno  + ' ' + e.apellido_materno}}</strong></p>
+                <p><strong>{{e.nombre  + ' ' + e.apellido_paterno  + ' ' + e.apellido_materno}} <?php if($compartir):?><i class="fas fa-share-alt fa-lg" @click="getGuestUSer(<?= $_SESSION ["SES_ID_EMPLEADO"] ?>)" data-toggle="modal" data-target="#shareModal"></i><?php endif;?></strong></p>
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
@@ -129,6 +148,31 @@
                     </div>
                 </div>
             </div><!--/.card-->
+            <!-- Modal -->
+            <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="shareModal">Compartir evaluacion</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-10">
+                        <label for="link"><strong>Link <i class="far fa-clipboard"></i></strong></label>
+                        <input type="text" class="form-control" :value="userGuest">
+                        </div>
+                    </div>
+                    <p><strong>Contraseña: {{userPass}}</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+                </div>
+            </div>
+            </div><!-- fin Modal -->
             <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">

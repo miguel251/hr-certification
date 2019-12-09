@@ -20,6 +20,8 @@ new Vue({
         valorReferencia: 0,
         relacion:'',
         competencias:[],
+        userGuest:'http://localhost/jmdistributions/Hr/Vistas/invitado/?user=',
+        userPass:'',
         //variables de formulario
         descripcion:'',
         resultadoEsperado:'',
@@ -343,6 +345,21 @@ new Vue({
             }).then(response =>{
                 this.conductas = response.data;
                 this.evaluarConducta();
+            });
+        },
+        getGuestUSer:function (id_supervisor) {
+            axios.post('/jmdistributions/Hr/Controlador/UserGuestController',{
+                data:{
+                    id_empleado:this.id_empleado.get('id'),
+                    id_supervisor: id_supervisor,
+                    function:'userguest',
+                }
+            }).then(response =>{
+                let regex = new RegExp('.*=[0-9]+$');                
+                if(!regex.test(this.userGuest)){
+                    this.userGuest += response.data[0].usuario;
+                }
+                this.userPass = response.data[0].contrasena;
             });
         },
         evaluarConducta:function () {

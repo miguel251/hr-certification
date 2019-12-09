@@ -16,9 +16,12 @@ class EmpleadoController
         
         $empleado = new Empleado();
 
-        if($id <= 0){
+        if($id == 0){
             $id = $_SESSION["SES_ID_USUARIO"];
             return $empleado->findEmpleado($id);
+        }else if($id == -1){
+            $id = $_SESSION["SES_ID_USUARIO"];
+            return $empleado->findColaborador($id);
         }
         return $empleado->findColaborador($id);
     }
