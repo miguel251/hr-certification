@@ -1,6 +1,7 @@
 <?php
 require_once ($_SERVER["DOCUMENT_ROOT"] . '/jmdistributions/Hr/Modelo/Objetivo.php');
 require_once ($_SERVER["DOCUMENT_ROOT"] . '/jmdistributions/Hr/Modelo/Periodo.php');
+require_once ($_SERVER["DOCUMENT_ROOT"] . '/jmdistributions/Hr/Modelo/EvidenciaObjetivo.php');
 session_start();
 
 
@@ -86,7 +87,11 @@ class ObjetivoController
 
         if($relacion == "Más es mejor"){//Calculo mas es mejor
 
-            $calificacion = ($resultadoObtenido/$resultadoEsperado) * $ponderacion;
+            $x = $resultadoEsperado - $valorReferencia;
+            $y = $resultadoObtenido - $valorReferencia;
+
+            $porcentaje = $y/$x;
+            $calificacion = $porcentaje * $ponderacion;
             $calificacion = number_format($calificacion, 2, '.', '');
 
         }else{//Calculo de menos es mejor
@@ -165,6 +170,38 @@ class ObjetivoController
         $objetivo = new Objetivo();
         return $objetivo->findObjetivosPeriodo($id_empleado, $id_periodo);
     }
+
+    //Regresa todas las evidencias subidas del objetivos
+    public function getAllArchivos($id_objetivo)
+    {
+        $evidencia = new EvidenciaObjetivo();
+        return $evidencia->findArchivos($id_objetivo);
+    }
+
+    //Elimina documento de base de datos y del servidor
+    public function deleteArchivo($id_documento, $documento)
+    {
+        $evidencia = new EvidenciaObjetivo();
+        $remove = $evidencia->removeArchvo($id_documento);
+        $response = [];
+
+        if($remove == 1){
+            unlink($_SERVER["DOCUMENT_ROOT"] . '/jmdistributions/Documentos_adjuntos/Objetivos/' . $documento);
+            $response = [
+                'estado' => 1,
+                'mensaje' => 'El documento se elimino.'
+            ];
+
+            return json_encode($response);
+        }
+
+        $response = [
+            'estado' => 0,
+            'mensaje' => 'Error al eliminar'
+        ];
+
+        return json_encode($response);
+    }
 }
 
 $data = json_decode(file_get_contents("php://input"),true); 
@@ -220,5 +257,13 @@ else if($data['data']['function'] == 'buscar')
 
 }else if($data['data']['function'] == 'buscaObjetivos'){
     
-    echo $function->showObjetivo($data['data']['id_empleado'], $data['data']['id_periodo']);     
+    echo $function->showObjetivo($data['data']['id_empleado'], $data['data']['id_periodo']); 
+
+}else if($data['data']['function'] == 'archivos'){
+
+    echo $function->getAllArchivos($data['data']['id_objetivo']);
+
+}else if($data['data']['function'] == 'deleteArchivos'){
+
+    echo $function->deleteArchivo($data['data']['id_documento'], $data['data']['documento']);
 }

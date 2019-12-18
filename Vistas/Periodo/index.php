@@ -107,7 +107,7 @@ if(isset($_GET['id']))
                        <div class="row">
                             <div class="col-3">
                                 <label for="Resultado">Resultado esperado</label>
-                                <input type="number" v-model="resultado" class="form-control" :required="true">
+                                <input type="number" v-model="resultado" step="0.01" class="form-control" :required="true">
                             </div>
                             <div class="col-3">
                                 <label for="unidad">Unidad de medición</label>
@@ -127,9 +127,9 @@ if(isset($_GET['id']))
                                     </option>
                                 </select>
                             </div>
-                            <div class="col-3" v-if="relacion < 2">
+                            <div class="col-3" v-if="relacion == 1">
                                 <label for="Resultado">Valor de referencia</label>
-                                <input type="text" disabled class="form-control" v-bind:value="0">
+                                <input type="text" class="form-control" v-model="referencia">
                             </div>
                             <div class="col-3" v-if="relacion == 2">
                                 <label for="Resultado">Valor de referencia <i class="far fa-question-circle" data-toggle="modal" data-target="#ModalInfo"></i></label>
@@ -198,7 +198,7 @@ if(isset($_GET['id']))
                        <div class="row">
                             <div class="col-3">
                                 <label for="Resultado">Resultado esperado</label>
-                                <input type="number" v-model="resultado" class="form-control" :required="true">
+                                <input type="number" v-model="resultado" step="0.01" class="form-control" :required="true">
                             </div>
                             <div class="col-3">
                                 <label for="unidad">Unidad de medición</label>
@@ -216,9 +216,9 @@ if(isset($_GET['id']))
                                     </option>
                                 </select>
                             </div>
-                            <div class="col-3" v-if="relacion < 2">
-                                <label for="Resultado">Valor de referencia</label>
-                                <input type="text" disabled class="form-control" v-bind:value="0">
+                            <div class="col-3" v-if="relacion == 1">
+                                <label for="Resultado">Valor de referencia</i></label>
+                                <input type="text" class="form-control" v-model="referencia">
                             </div>
                             <div class="col-3" v-if="relacion == 2">
                                 <label for="Resultado">Valor de referencia <i class="far fa-question-circle" data-toggle="modal" data-target="#ModalInfo"></i></label>

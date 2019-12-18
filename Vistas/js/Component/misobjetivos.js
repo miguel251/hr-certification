@@ -4,6 +4,7 @@ new Vue({
         objetivos:[],
         empleado:[],
         conductas:[],
+        archivos:[],
         comentario:'',
         descripcion:'',
         competencias: '',
@@ -18,6 +19,7 @@ new Vue({
         comentarioGeneralS:'',
         resultadoEsperado:0,
         unidad:'',
+        contador:0,
         valorObtenido:0,
         valorSugerencia:0,
         promedioConducta:0,
@@ -40,9 +42,7 @@ new Vue({
                     id: 0,
                     function: 'buscar',
                 }
-            }).then(response =>{ 
-                console.log(response.data);
-                               
+            }).then(response =>{                                
                 this.empleado = response.data[0];
                 this.id_puesto = this.empleado.id_puesto;
                 this.id_empleado = this.empleado.id_empleado;
@@ -143,6 +143,94 @@ new Vue({
                 this.frecuencias = response.data;
             });  
         },
+        getArchivos:function () {
+            axios.post('/jmdistributions/Hr/Controlador/ObjetivoController',{
+                data:{
+                    id_objetivo: this.id_objetivo,
+                    function:'archivos',
+                }
+            }).then(response =>{                
+                this.archivos = response.data;
+            });  
+        },
+        warning: function(id_documento, documento)
+        {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Eliminar'
+            }).then((result) => {
+                if (result.value) {
+                    this.deleteArchivo(id_documento, documento);
+                }
+            });
+        },
+        deleteArchivo:function(id_documento, documento) {
+            axios.post('/jmdistributions/Hr/Controlador/ObjetivoController',{
+                data:{
+                    id_documento: id_documento,
+                    documento: documento,
+                    function:'deleteArchivos',
+                }
+            }).then(response =>{                
+                if(response.data.estado == 1){
+                    this.success(response.data.mensaje);
+                    this.getArchivos();
+                }else{
+                    this.alert(response.data.mensaje);
+                }
+                
+            });  
+        },
+        getArchivos:function () {
+            axios.post('/jmdistributions/Hr/Controlador/ObjetivoController',{
+                data:{
+                    id_objetivo: this.id_objetivo,
+                    function:'archivos',
+                }
+            }).then(response =>{                
+                this.archivos = response.data;
+            });  
+        },
+        warning: function(id_documento, documento)
+        {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Eliminar'
+            }).then((result) => {
+                if (result.value) {
+                    this.deleteArchivo(id_documento, documento);
+                }
+            });
+        },
+        deleteArchivo:function(id_documento, documento) {
+            axios.post('/jmdistributions/Hr/Controlador/ObjetivoController',{
+                data:{
+                    id_documento: id_documento,
+                    documento: documento,
+                    function:'deleteArchivos',
+                }
+            }).then(response =>{                
+                if(response.data.estado == 1){
+                    this.success(response.data.mensaje);
+                    this.getArchivos();
+                }else{
+                    this.alert(response.data.mensaje);
+                }
+                
+            });  
+        },
         evaluarConducta:function () {
             axios.post('/jmdistributions/Hr/Controlador/PuestoController',{
                 data:{
@@ -216,13 +304,22 @@ new Vue({
                     function: 'eval',
                 }
             }).then(response =>{
-                console.log(response.data);
                 if(response.data == 1){
                     this.getDatosEmpleado();
                     this.success('Se guardo la evaluacion.');
                 }else{
                     this.error('Error al guardar.')
                 }                       
+            });
+        },
+        findRelacion(id){
+            axios.post('/jmdistributions/Hr/Controlador/RelacionController',{
+                data:{
+                    id: id,
+                    function: 'buscar',
+                }
+            }).then((response) =>{
+                this.relacion = response.data[0].relacion;
             });
         },
         findObjective: function (id) {
@@ -235,10 +332,13 @@ new Vue({
                 this.id_objetivo = id;            
                 this.descripcion = response.data[0].descripcion;
                 this.resultadoEsperado = response.data[0].resultado_esperado;
-                this.valorObtenido = response.data[0].valor_obtenido ? response.data[0].valor_obtenido : '' ;
+                this.valorObtenido = response.data[0].valor_obtenido ? response.data[0].valor_obtenido : 'Sin evaluar' ;
                 this.valorSugerencia = response.data[0].valor_sugerencia != null ? response.data[0].valor_sugerencia : 0;
+                this.valorReferencia = response.data[0].valor_referencia;
                 this.comentario = response.data[0].comentario ? response.data[0].comentario : '';
-                this.findUnidad(response.data[0].id_unidad);             
+                this.findUnidad(response.data[0].id_unidad);
+                this.findRelacion(response.data[0].id_relacion);
+                this.getArchivos();               
             });
         },
         findUnidad(id){

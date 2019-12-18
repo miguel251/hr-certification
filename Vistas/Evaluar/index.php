@@ -210,7 +210,7 @@ if(isset($_GET['id']))
         </div><!-- Modal -->
         <!-- Modal -->
         <div class="modal fade" id="ModalEvaluar" tabindex="-1" role="dialog" aria-labelledby="ModalEvaluar" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Evaluar objetivos SMART</h5>
@@ -233,16 +233,42 @@ if(isset($_GET['id']))
                             <label for="Resultado">Unidad de medición</label>
                             <input type="text" v-model="unidad" class="form-control" disabled>
                         </div>
+                        <div class=" col-6">
+                            <label for="descripcion">Relación</label>
+                            <input type="text" :value="relacion"  disabled class="form-control">
+                        </div>
+                        <div class=" col-6">
+                            <label for="descripcion">Valor de referencia</label>
+                            <input type="text" :value="valorReferencia"  disabled class="form-control">
+                        </div>
                         <div class="col-6">
                             <label for="Resultado">Resultado sugerido</label>
                             <input type="text" v-model="resultadoSugerido" class="form-control" disabled>
                         </div>
                         <div class="col-6">
                             <label for="Resultado">Valor obtenido</label>
-                            <input type="number" v-model="resultadoObtenido" class="form-control" :required="true">
+                            <input type="number" v-model="resultadoObtenido" step="0.01" class="form-control" :required="true">
                         </div>
                     </div>
             </form>
+            
+            <label for="Evidencias" v-if="archivos != 0"><strong>Evidencia de objetivos</strong></label>
+        <table class="table table-striped" v-if="archivos !=0">
+                <thead>
+                    <tr>
+                    <th></th>
+                    <th scope="col">Archivo</th>
+                    <th scope="col">Descargar</th>
+                    </tr>
+                </thead>
+                <tbody v-for="archivo in archivos">
+                    <tr>
+                    <td><i class="fas fa-file-alt fa-lg"></i></td>
+                    <td><a :href="'/jmdistributions/Documentos_adjuntos/Objetivos/' + archivo.documento" class="link-black" :download="archivo.documento">{{archivo.documento}}</a></td>
+                    <td><a :href="'/jmdistributions/Documentos_adjuntos/Objetivos/' + archivo.documento" :download="archivo.documento"><i class="fas fa-cloud-download-alt fa-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

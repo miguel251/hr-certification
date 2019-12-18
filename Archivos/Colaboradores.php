@@ -104,10 +104,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <tr class="table-light">
           <td><?= ucfirst(mb_strtolower($empleadoPeriodo[$key]->nombre, 'UTF-8')) . ' ' . ucfirst(mb_strtolower($empleadoPeriodo[$key]->apellido_paterno, 'UTF-8')) . ' '.  ucfirst(mb_strtolower($empleadoPeriodo[$key]->apellido_materno, 'UTF-8'))?></td>
           <td><?= ucfirst(mb_strtolower($empleadoPeriodo[$key]->departamento, 'UTF-8'))?></td>
-          <td><?=  ucfirst(mb_strtolower($empleadoPeriodo[$key]->puesto, 'UTF-8'))?></td>
-          <td><?=  $empleadoPeriodo[$key]->periodo?></td>
+          <td><?= ucfirst(mb_strtolower($empleadoPeriodo[$key]->puesto, 'UTF-8'))?></td>
+          <td><?= $empleadoPeriodo[$key]->periodo?></td>
           <td><i class="fas fa-search fa-lg"></i></td>
-          <td><i class="far fa-edit fa-lg color-gray"></i></td>
+          <td><a href="../Hr/Vistas/Editar/index.php?id=<?= $empleadoPeriodo[$key]->id_empleado?>"><i class="far fa-edit fa-lg color-gray"></i></a></td>
           <td><i class="fas fa-box fa-lg"></i></td>
           <td><a href="../Hr/Vistas/Evaluar/index.php?id=<?= $empleadoPeriodo[$key]->id_empleado?>"><i class="fas fa-user-check fa-lg"></i></a></td>
         </tr>

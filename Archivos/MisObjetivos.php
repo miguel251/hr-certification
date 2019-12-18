@@ -114,7 +114,7 @@ if($permiso[0]->consulta == 0){
                         <td>{{conducta.conducta}}</td>
                         <td></td>
                         <td>{{conducta.calificacion != null ? conducta.calificacion : '0'}}</td>
-                        <td >{{conducta.calificacion_sugerencia}}</td> <!--duda de valor -->
+                        <td>{{conducta.calificacion_sugerencia != null ? conducta.calificacion_sugerencia : '0'}}</td> <!--duda de valor -->
                         <td><i class="fas fa-check fa-lg" v-on:click="findConducta(conducta.id_conducta)" data-toggle="modal" data-target="#ModalConductas"></i></td>
                     </tr>
                     </tbody>
@@ -156,7 +156,7 @@ if($permiso[0]->consulta == 0){
         </div><!--/.col-12-->
     </div><!--/.row-->
 <div class="modal fade" id="addEvaluacion" tabindex="-1" role="dialog" aria-labelledby="addEvaluacion" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="Objetivo">Objetivos SMART</h5>
@@ -175,12 +175,20 @@ if($permiso[0]->consulta == 0){
         </div>
         <div class="row">
             <div class="col-6">
-                <label for="descripcion">Resultado esperado</label>
-                <input type="text" :value="descripcion" class="form-control" disabled>
+                <label for="resultadoEsperado">Resultado esperado</label>
+                <input type="text" :value="resultadoEsperado" class="form-control" disabled>
             </div>
             <div class="col-6">
                 <label for="descripcion">Unidad de medición</label>
                 <input type="text" :value="unidad" class="form-control" disabled>
+            </div>
+            <div class=" col-6">
+                <label for="descripcion">Relación</label>
+                <input type="text" :value="relacion"  disabled class="form-control">
+            </div>
+            <div class=" col-6">
+                <label for="descripcion">Valor de referencia</label>
+                <input type="text" :value="valorReferencia"  disabled class="form-control">
             </div>
             <div class=" col-6">
                 <label for="descripcion">Valor obtenido</label>
@@ -191,9 +199,32 @@ if($permiso[0]->consulta == 0){
                 <input type="text" v-model="valorSugerencia" class="form-control">
             </div>
         </div>
+        <label for="Evidencias"><strong>Evidencia de objetivos</strong></label>
+        <table class="table table-striped" v-if="archivos !=0">
+                <thead>
+                    <tr>
+                    <th></th>
+                    <th scope="col">Archivo</th>
+                    <th scope="col">Eliminar</th>
+                    <th scope="col">Descargar</th>
+                    </tr>
+                </thead>
+                <tbody v-for="archivo in archivos">
+                    <tr>
+                    <td><i class="fas fa-file-alt fa-lg"></i></td>
+                    <td><a :href="'../Documentos_adjuntos/Objetivos/' + archivo.documento" class="link-black" :download="archivo.documento">{{archivo.documento}}</a></td>
+                    <td><i class="fas fa-trash fa-lg" @click="warning(archivo.id_documento, archivo.documento)"></i></td>
+                    <td><a :href="'../Documentos_adjuntos/Objetivos/' + archivo.documento" :download="archivo.documento"><i class="fas fa-cloud-download-alt fa-lg"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div v-else class="text-center"> 
+            <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#ModalEvidencia">Agregar evidencia</button>
+            </div>
       </div><!--/.modal-body -->
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" v-if="archivos != 0" class="btn btn-outline-info" data-toggle="modal" data-target="#ModalEvidencia">Agregar evidencia</button>
         <button type="submit" class="btn btn-primary" @click="addValorSugerido" data-dismiss="modal">Guardar</button>
       </div><!--/.modal-footer -->
       </form>
@@ -293,6 +324,33 @@ if($permiso[0]->consulta == 0){
                 </div>
             </div>
         </div><!-- Modal Conductas-->
+            <!--Modal Evidencias -->
+            <div class="modal fade" id="ModalEvidencia" tabindex="-1" role="dialog" aria-labelledby="ModalEvidencia" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalEvidencia">Agregar evidencia</h5>
+                    <button type="button" class="close reset-dropzone" data-dismiss="modal" @click="getArchivos" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                <form action="/jmdistributions/Hr/Controlador/UploadController.php"
+                    class="dropzone"
+                    method="post" enctype="multipart/form-data"
+                    id="my-awesome-dropzone">
+                    <input name="id_objetivo" type="hidden" :value="id_objetivo"/>
+                    <div class="fallback">
+                        <input name="file" type="file" multiple />
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary reset-dropzone" data-dismiss="modal" @click="getArchivos">Cerrar</button>
+                </div>
+                </div>
+            </div>
+        </div><!-- Modal Evidencias-->
   </div><!--/.container #asignar-->
 
 <!-- REQUIRED SCRIPTS -->
@@ -308,5 +366,7 @@ if($permiso[0]->consulta == 0){
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="/jmdistributions/Hr/Vistas/js/Component/misobjetivos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.js"></script>
+<script src="/jmdistributions/Hr/Vistas/js/upload.js"></script>
 </body>
 </html>

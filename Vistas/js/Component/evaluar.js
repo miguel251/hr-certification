@@ -4,6 +4,7 @@ new Vue({
         id_empleado:  new URLSearchParams(location.search),
         id_periodo:0,
         idConducta:0,
+        archivos:[],
         bandera:false,
         banderaConducta:3,
         objetivos:'',
@@ -56,8 +57,7 @@ new Vue({
                 this.empleado = response.data;
                 this.getPeriodos(response.data[0].id_puesto);
                 this.getObjective();
-                this.getCriterioPesos();   
-                          
+                this.getCriterioPesos();
             });
         },
         getAllData: function (){
@@ -170,6 +170,16 @@ new Vue({
                 this.calidades = response.data;
             });  
         },
+        getArchivos:function () {
+            axios.post('/jmdistributions/Hr/Controlador/ObjetivoController',{
+                data:{
+                    id_objetivo: this.id_objetivo,
+                    function:'archivos',
+                }
+            }).then(response =>{                
+                this.archivos = response.data;
+            });  
+        },
         getCriterioFrecuencia:function() {
             axios.post('/jmdistributions/Hr/Controlador/CriterioController',{
                 data:{
@@ -196,7 +206,7 @@ new Vue({
                     this.getDatosEmpleado();
                     this.success('Se guardo la evaluacion.');
                     this.banderaConducta = 0;
-                }else{
+                }else{                    
                     this.error('Error al guardar.')
                 }                       
             });
@@ -227,7 +237,7 @@ new Vue({
                     id: id,
                     function: 'buscar',
                 }
-            }).then((response) =>{
+            }).then((response) =>{                
                 this.id_objetivo = id;            
                 this.descripcion = response.data[0].descripcion;
                 this.resultadoEsperado = response.data[0].resultado_esperado;
@@ -237,6 +247,7 @@ new Vue({
                 this.resultadoSugerido = response.data[0].valor_sugerencia != null ? response.data[0].valor_sugerencia : 0;
                 this.findUnidad(response.data[0].id_unidad);
                 this.findRelacion(response.data[0].id_relacion);
+                this.getArchivos(); 
             });
         },
         findConducta:function (id) {
@@ -391,6 +402,7 @@ new Vue({
                     this.getObjective();
                     this.bandera = true;                    
                 }else{
+                    console.log(response.data);
                     this.error(response.data.mensaje);
                 }
                 

@@ -141,7 +141,7 @@ if($permiso[0]->consulta == 0){
                         <td>{{conducta.conducta}}</td>
                         <td></td>
                         <td>{{conducta.calificacion != null ? conducta.calificacion : '0'}}</td>
-                        <td >{{conducta.calificacion_sugerencia}}</td> <!--duda de valor -->
+                        <td>{{conducta.calificacion_sugerencia != null ? conducta.calificacion_sugerencia : '0'}}</td> <!--duda de valor -->
                     </tr>
                     </tbody>
                 </table>
