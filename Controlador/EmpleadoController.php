@@ -51,6 +51,11 @@ class EmpleadoController
         $empleado = new Empleado();
         return $empleado->getAllEmpleadosArea($id_area);
     }
+
+    public function ValidarUsuario($usuario){
+        $empleado = new Empleado();
+        return $empleado->validaUsuario($usuario);
+    }
 }
 
 
@@ -75,12 +80,9 @@ if($data['data']['function'] == 'buscar')
 }else if($data['data']['function'] == 'buscarEmpleadoArea')
 {
     echo $function->findAreaEmpleado($data['data']['id_area']);
-}
 
-/*Comentarios objetivos antes de asignar
-unidad
-competencias tecnicas - puestos
-catalogo de puestos - descripcion de puestos
-termometro
-descripcion de puestos
-*/
+}else if($data['data']['function'] == 'usuario'){
+
+    echo $function->ValidarUsuario($data['data']['usuario']);
+
+}

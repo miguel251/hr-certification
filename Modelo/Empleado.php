@@ -236,4 +236,17 @@ class Empleado
 
         return $empleado;
     }
+
+    public function validaUsuario($usuario)
+    {
+        $conn = $this->conn->conexion();
+        $sql = 'SELECT nombre FROM usuario
+        WHERE nombre_usuario LIKE :usuario';
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(":usuario", $usuario);
+        $stmt->execute();
+        $nombre = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        return json_encode($nombre);
+    }
 }
