@@ -7,6 +7,7 @@ Vue.component('modal', {
     data: {
         showModal: false,
         message: new URLSearchParams(location.search),
+        asignar_periodo: true,
         empleado: '',
         comentario:'',
         referencia: 0,
@@ -98,6 +99,7 @@ Vue.component('modal', {
                 if(response.data.estado)
                 {
                     this.success(response.data.mensaje);
+                    this.asignar_periodo = false;
                 }else{
                     this.alert(response.data.mensaje)
                 }
@@ -186,7 +188,6 @@ Vue.component('modal', {
                     this.clearInput();
                     this.getObjective();
                 }else{
-                    console.log(response.data);
                     this.error();
                 }
             });            
@@ -280,6 +281,7 @@ Vue.component('modal', {
               })
         },
         clearInput: function(){
+            this.asignar_periodo = true;
             this.unidad= '';           
             this.descripcion= '';
             this.resultado= '';

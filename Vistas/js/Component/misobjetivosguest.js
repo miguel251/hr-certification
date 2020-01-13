@@ -6,6 +6,7 @@ new Vue({
         conductas:[],
         archivos:[],
         comentario:'',
+        compromiso:'',
         descripcion:'',
         competencias: '',
         calidad:'',
@@ -156,6 +157,19 @@ new Vue({
                 this.archivos = response.data;
             });  
         },
+        getCompromiso:function () {
+            axios.post('/jmdistributions/Hr/Controlador/PeriodoController',{
+                data:{
+                    id_empleado:this.id_empleado,
+                    id_periodo: this.id_periodo,
+                    function:'getCompromiso',
+                }
+            }).then(response =>{                                
+                if (typeof response.data[0] != 'undefined') {
+                    this.compromiso = response.data[0].compromiso;
+                }                                               
+            });
+        },
         warning: function(id_documento, documento)
         {
             Swal.fire({
@@ -270,6 +284,24 @@ new Vue({
                 }else{
                     this.error('Error al guardar.')
                 }                       
+            });
+        },
+        addCompromiso: function (event) {
+            event.preventDefault();
+            axios.post('/jmdistributions/Hr/Controlador/PeriodoController',{
+                data:{
+                    id_periodo: this.id_periodo,
+                    id_empleado: this.id_empleado,
+                    compromiso: this.compromiso,
+                    function: 'compromiso',
+                }
+            }).then(response =>{                
+                if(response.data == 1 ){
+                    this.success('El compromiso se guardo.')
+                }else{
+                    this.error('Error al guardar.')
+                }
+                                      
             });
         },
         findRelacion(id){

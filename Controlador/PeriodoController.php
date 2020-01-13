@@ -215,6 +215,37 @@ class PeriodoController
         $periodo = new Periodo();
         return $periodo->getPeriodosEmpleado($id_empleado);
     }
+
+    //Guardar compromiso
+    public function storeCompromiso($data){
+
+        $periodo = new Periodo();
+        return $periodo->addCompromiso($data);
+    }
+
+    //Regresa compromiso
+    public function getCompromiso($id_empleado, $id_periodo)
+    {
+        $periodo = new Periodo();
+        return $periodo->getAllCompromiso($id_empleado, $id_periodo);
+    }
+    
+    //Todos los peridos con objetivos asignados
+    public function getAllPeridosAsignados()
+    {
+        $periodo = new Periodo();
+        return $periodo->getAllPeridoAsignado();
+    }
+    //Todos los avances con filtros de periodo y supervisor
+    public function getAllAvance($id_supervisor, $id_periodo)
+    {
+        $periodo = new Periodo();
+        if($id_supervisor == 'todos'){
+            return $periodo->getAllAvanceIdPeriodo($id_periodo);
+        }
+
+        return $periodo-> getAllAvanceIdSPeriodo($id_periodo, $id_supervisor);
+    }
 }
 
 $function = new PeriodoController();
@@ -272,4 +303,20 @@ else if($data['data']['function'] == 'buscar')
 }else if($data['data']['function'] == 'periodoEmpleado')
 {
     echo $function->showPeriodoEmpleado($data['data']['idEmpleado']);
+
+}else if ($data['data']['function'] == 'compromiso') 
+{
+    echo $function->storeCompromiso($data['data']);
+
+}else if ($data['data']['function'] == 'getCompromiso') 
+{
+    echo $function->getCompromiso($data['data']['id_empleado'],$data['data']['id_periodo']);
+
+}else if ($data['data']['function'] == 'PeriodoAsignado') 
+{
+    echo $function->getAllPeridosAsignados();
+
+}else if ($data['data']['function'] == 'avance') 
+{
+    echo $function->getAllAvance($data['data']['id_empleado'],$data['data']['id_periodo']);
 }

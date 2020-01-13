@@ -56,6 +56,27 @@ class EmpleadoController
         $empleado = new Empleado();
         return $empleado->validaUsuario($usuario);
     }
+
+    public function getAllEmpleadoArea($id_area)
+    {
+        $empleado = new Empleado();
+        return $empleado->getAllEmpleadosIdArea($id_area);
+    }
+    public function getAllEmpleadoClo($id_clo, $id_area)
+    {
+        $empleado = new Empleado();
+        
+        if($id_clo == 0){
+            return $empleado->getAllEmpleadosIdArea($id_area);
+        }
+        return $empleado->findColaboradorClo($id_clo, $id_area);
+    }
+
+    public function getAllSupervisor($id_periodo)
+    {
+        $empleado = new Empleado();
+        return $empleado->getAllSupervisor($id_periodo);
+    }
 }
 
 
@@ -84,5 +105,17 @@ if($data['data']['function'] == 'buscar')
 }else if($data['data']['function'] == 'usuario'){
 
     echo $function->ValidarUsuario($data['data']['usuario']);
+
+}else if($data['data']['function'] == 'empleadoArea'){
+
+    echo $function->getAllEmpleadoArea($data['data']['id_area']);
+
+}else if($data['data']['function'] == 'buscarC'){
+
+    echo $function->getAllEmpleadoClo($data['data']['id_clo'],$data['data']['id_area']);
+
+}else if($data['data']['function'] == 'supervisor'){
+
+    echo $function->getAllSupervisor($data['data']['id_periodo']);
 
 }

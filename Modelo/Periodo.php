@@ -25,7 +25,57 @@ class Periodo
 
         return json_encode($periodos);
     }
+    //Todos los periodos ya asignados a objetivos
+    public function getAllPeridoAsignado(){
+        $conn = $this->conn->conexion();
+        $sql = 'SELECT DISTINCT periodo.id_periodo, periodo.* FROM periodo_asignado
+        INNER JOIN periodo
+        ON periodo_asignado.id_periodo = periodo.id_periodo
+        WHERE visible = 1
+        ORDER BY activo DESC';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $periodos = $stmt->fetchAll(PDO::FETCH_OBJ);
 
+        return json_encode($periodos);
+    }
+    //Avance de objetivos asignados por periodo y todos los supervisores
+    public function getAllAvanceIdPeriodo($id_periodo){
+        $conn = $this->conn->conexion();
+        $sql = "SELECT  periodo.titulo, empleado.numero_empleado, CONCAT(empleado.nombre, ' ', empleado.apellido_paterno, ' ', empleado.apellido_materno) as empleado, CONCAT(supervisor.nombre, ' ', supervisor.apellido_paterno, ' ', supervisor.apellido_materno) as supervisor, periodo.activo, periodo_asignado.calificacion FROM periodo_asignado
+        INNER JOIN periodo
+        ON periodo.id_periodo = periodo_asignado.id_periodo
+        INNER JOIN empleado
+        ON empleado.id_empleado = periodo_asignado.id_empleado
+        INNER JOIN empleado supervisor
+        ON supervisor.id_empleado = empleado.id_empleado_supervisor
+        WHERE periodo_asignado.id_periodo = :id";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id', $id_periodo);
+        $stmt->execute();
+        $periodos = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        return json_encode($periodos);
+    }
+    //Avance de objetivos asignados por periodo con filtro de supervisor
+    public function getAllAvanceIdSPeriodo($id_periodo, $id_supervisor){
+        $conn = $this->conn->conexion();
+        $sql = "SELECT  periodo.titulo, empleado.numero_empleado, CONCAT(empleado.nombre, ' ', empleado.apellido_paterno, ' ', empleado.apellido_materno) as empleado, CONCAT(supervisor.nombre, ' ', supervisor.apellido_paterno, ' ', supervisor.apellido_materno) as supervisor, periodo.activo, periodo_asignado.calificacion FROM periodo_asignado
+        INNER JOIN periodo
+        ON periodo.id_periodo = periodo_asignado.id_periodo
+        INNER JOIN empleado
+        ON empleado.id_empleado = periodo_asignado.id_empleado
+        INNER JOIN empleado supervisor
+        ON supervisor.id_empleado = empleado.id_empleado_supervisor
+        WHERE periodo_asignado.id_periodo = :id_periodo AND supervisor.id_empleado = :id_supervisor";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id_periodo', $id_periodo);
+        $stmt->bindParam(':id_supervisor', $id_supervisor);
+        $stmt->execute();
+        $periodos = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        return json_encode($periodos);
+    }
     //Agrega periodo
     public function addPeriodo($datas){
         
@@ -246,5 +296,35 @@ class Periodo
         $periodos = $stmt->fetchAll(PDO::FETCH_OBJ);
         
         return json_encode($periodos);
+    }
+
+    public function addCompromiso($data){
+
+        $conn = $this->conn->conexion();
+        $sql = 'UPDATE periodo_asignado SET
+        compromiso = :compromiso
+        WHERE id_periodo = :id_periodo
+        AND id_empleado = :id_empleado';
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id_periodo', $data["id_periodo"]);
+        $stmt->bindParam(':id_empleado', $data["id_empleado"]);
+        $stmt->bindParam(':compromiso', $data["compromiso"]);
+        return $stmt->execute();
+    }
+
+    public function getAllCompromiso($id_empleado, $id_periodo)
+    {
+        $conn = $this->conn->conexion();
+        $sql = 'SELECT compromiso
+        FROM periodo_asignado
+        WHERE id_periodo = :id_periodo
+        AND id_empleado = :id_empleado';
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id_periodo', $id_periodo);
+        $stmt->bindParam(':id_empleado', $id_empleado);
+        $stmt->execute();
+        $compromiso = $stmt->fetchAll(PDO::FETCH_OBJ);
+        
+        return json_encode($compromiso);
     }
 }

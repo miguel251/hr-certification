@@ -9,6 +9,7 @@ new Vue({
         banderaConducta:3,
         objetivos:'',
         conductas:[],
+        compromiso:'',
         empleado:'',
         evaluacion:0,
         relacion:'',
@@ -78,6 +79,7 @@ new Vue({
                 this.id_periodo = response.data[0].id_periodo;
                 this.getConductas(id_puesto, this.id_periodo);
                 this.getComentarios(this.id_empleado.get('id'));
+                this.getCompromiso(this.id_empleado.get('id'));
             });
         },
         getObjective: function(){
@@ -89,6 +91,19 @@ new Vue({
             }).then(response =>{  
                 this.objetivos = response.data;
                 this.getPromedio(this.objetivos);
+            });
+        },
+        getCompromiso:function (id_empleado) {
+            axios.post('/jmdistributions/Hr/Controlador/PeriodoController',{
+                data:{
+                    id_empleado: id_empleado,
+                    id_periodo: this.id_periodo,
+                    function:'getCompromiso',
+                }
+            }).then(response =>{                                
+                if (typeof response.data[0] != 'undefined') {
+                    this.compromiso = response.data[0].compromiso;
+                }                                               
             });
         },
         getPromedio:function(objetivos){

@@ -79,7 +79,7 @@ if(isset($_GET['id']))
                     <button class="btn btn-primary" v-on:click="getAllData" data-toggle="modal" data-target="#exampleModal">Agregar nuevo objetivo</button>
                 </div>
                 <div class="col text-center" v-if="total === 100">
-                    <button class="btn btn-primary" data-toggle="modal" v-on:click="getPeriodActive" data-target="#ModalPeriodo">Crear periodo</button>
+                    <button class="btn btn-primary" data-toggle="modal" v-on:click="getPeriodActive" data-target="#ModalPeriodo" v-if="asignar_periodo">Crear periodo</button>
                 </div>
                 <div class="col text-center" v-if="total > 100">
                     <p> <strong>La creación del periodo se habilitará una vez que la suma de las ponderaciones de los objetivos sea igual a 100.</strong> </p>
@@ -299,7 +299,7 @@ if(isset($_GET['id']))
                            </div>
                            <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" v-on data-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary">Crear periodo</button>
+                            <button type="submit" class="btn btn-primary" v-if="asignar_periodo">Crear periodo</button>
                         </div>
                     </form>
                 </div>

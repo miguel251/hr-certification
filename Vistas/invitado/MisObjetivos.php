@@ -144,6 +144,29 @@ require_once ($_SERVER["DOCUMENT_ROOT"] . '/jmdistributions/Hr/head.php');
                 </div><!--/.card-body-->
             </div><!--/.card-->
         </div><!--/.col-12-->
+        <div class="col-sm-12" v-if="objetivos != 0">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4><strong>Compromiso smart</strong></h4>
+                </div><!--/.card-header-->
+                <div class="card-body">
+                    <form 
+                        id="periodo"
+                        @submit="addCompromiso"
+                        method="post">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label for="Comentario" class="header-blue text-center"><strong>Compromisos del periodo</strong></label>
+                                <textarea class="form-control" v-model="compromiso" rows="5" placeholder="La siguiente caja de texto podrá agregar compromisos generales para la mejora del periodo evaluado, serán visualizados por el supervisor."></textarea>
+                            </div>
+                            <div class="col-sm-12 text-center" style="margin-top: 1rem;">
+                                <button class="btn btn-primary" type="submit">Guardar compromiso</button>
+                            </div>
+                        </div>
+                    </form>
+                </div><!--/.card-body-->
+            </div><!--/.card-->
+        </div><!--/.col-12-->
     </div><!--/.row-->
     <div class="modal fade" id="addEvaluacion" tabindex="-1" role="dialog" aria-labelledby="addEvaluacion" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">

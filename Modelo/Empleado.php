@@ -21,6 +21,22 @@ class Empleado
 
         return $empleados;
     }
+    
+    //Regresa todos los empleados por area
+    public function getAllEmpleadosIdArea($id_area)
+    {
+        $conn = $this->conn->conexion();
+        $sql = "SELECT empleado.id_empleado,
+        CONCAT(empleado.nombre,' ',empleado.apellido_materno,' ', empleado.apellido_paterno) AS nombre
+        FROM empleado
+        WHERE empleado.id_area = :id_area AND empleado.activo = 1 AND NOT empleado.numero_empleado = '' ";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(":id_area", $id_area);
+        $stmt->execute();
+        $empleados = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        return json_encode($empleados);
+    }
 
     //Metodo que regresa empleados con periodos asignados
     public function getAllEmpleadosPeriodo(){
@@ -164,17 +180,39 @@ class Empleado
         return $empleado;
     }
 
+    //Regresa todos los supervisores que asignaron objetivos
+    public function getAllSupervisor($id_periodo){
+        $conn = $this->conn->conexion();
+        $sql = "SELECT DISTINCT supervisor.id_empleado, CONCAT(supervisor.nombre, ' ', supervisor.apellido_paterno, ' ', supervisor.apellido_materno) as supervisor FROM periodo_asignado
+        INNER JOIN empleado
+        ON empleado.id_empleado = periodo_asignado.id_empleado
+        INNER JOIN empleado supervisor
+        ON supervisor.id_empleado = empleado.id_empleado_supervisor
+        WHERE periodo_asignado.id_periodo = :id_periodo";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(":id_periodo", $id_periodo);
+        $stmt->execute();
+        $supervisor = $stmt->fetchAll(PDO::FETCH_OBJ);
+        return json_encode($supervisor);
+    }
+
     //Busca empleado por su id
     public function findColaborador($id)
     {
         $conn = $this->conn->conexion();
-        $sql = 'SELECT empleado.id_empleado, empleado.nombre, 
+        $sql = "SELECT empleado.id_empleado, empleado.nombre, 
                        empleado.apellido_paterno, empleado.apellido_materno,
-                       puesto.puesto, puesto.id_puesto
+                       puesto.puesto, puesto.id_puesto, clo.id_clo, clo.clo,
+                       supervisor.id_empleado as id_supervisor,
+					   CONCAT(supervisor.nombre, ' ',supervisor.apellido_paterno, ' ',supervisor.apellido_materno) as supervisor
                 FROM empleado
                 INNER JOIN puesto
                 ON puesto.id_puesto = empleado.id_puesto
-                WHERE empleado.id_empleado = :id';
+				INNER JOIN clo
+				ON clo.id_clo = empleado.id_clo
+				LEFT JOIN empleado supervisor
+				ON supervisor.id_empleado = empleado.id_empleado_supervisor
+                WHERE empleado.id_empleado = :id";
         
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(":id", $id);
@@ -183,6 +221,23 @@ class Empleado
 
         return json_encode($empleado);
     }
+
+        //Busca empleado por su clo
+        public function findColaboradorClo($id_clo, $id_area)
+        {
+            $conn = $this->conn->conexion();
+            $sql = "SELECT empleado.id_empleado,
+            CONCAT(empleado.nombre,' ',empleado.apellido_materno,' ', empleado.apellido_paterno) AS nombre
+            FROM empleado
+            WHERE empleado.id_clo = :id_clo AND id_area = :id_area AND empleado.activo = 1 AND NOT empleado.numero_empleado = '' ";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(":id_clo", $id_clo);
+            $stmt->bindParam(":id_area", $id_area);
+            $stmt->execute();
+            $empleados = $stmt->fetchAll(PDO::FETCH_OBJ);
+    
+            return json_encode($empleados);
+        }
 
     //Busca empleado por el id de usuario
     public function findEmpleado($id)

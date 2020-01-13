@@ -46,3 +46,26 @@ tbody{
 .card{
     margin-top: 1.5rem;
 }
+.input-group-text-green{
+    color: white;
+    background-color: #018B27;
+    border: 1px solid #018B27;
+}
+.material-icons{
+    cursor: pointer;
+}
+.card-btn{
+    background-color: transparent; 
+    border: 2px dashed #46A476; 
+    height: 90px;
+    padding: 15px;
+    color: #46A476;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.5s all ease-in-out;
+}
+.card-btn:hover{
+    background-color:#46A476;
+    color:white;
+    border: 2px dashed#fff;
+}

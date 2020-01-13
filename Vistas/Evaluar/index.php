@@ -147,6 +147,20 @@ if(isset($_GET['id']))
                         </form>
                     </div>
                 </div>
+                </div>
+            </div><!--/.card-->
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4><strong>Compromiso smart</strong></h4>
+                </div><!--/.card-header-->
+                <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label for="Comentario" class="header-blue text-center"><strong>Compromisos del periodo (evaluado)</strong></label>
+                                <textarea class="form-control" :value="compromiso" disabled rows="5"></textarea>
+                            </div>
+                        </div>
+                </div><!--/.card-body-->
             </div><!--/.card-->
             <!-- Modal -->
             <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModal" aria-hidden="true">

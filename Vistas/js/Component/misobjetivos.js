@@ -6,6 +6,7 @@ new Vue({
         conductas:[],
         archivos:[],
         comentario:'',
+        compromiso:'',
         descripcion:'',
         competencias: '',
         relacion:'',
@@ -72,6 +73,7 @@ new Vue({
                 this.id_periodo = response.data[0].id_periodo;
                 this.getConductas(this.id_periodo);
                 this.getComentario();
+                this.getCompromiso();
             });
         },
         getConductas:function(id_periodo) {
@@ -98,6 +100,19 @@ new Vue({
                 if (typeof response.data[0] != 'undefined') {
                     this.comentario = response.data[0].comentario_empleado;
                     this.comentarioGeneralS = response.data[0].comentario_supervisor;
+                }                                               
+            });
+        },
+        getCompromiso:function () {
+            axios.post('/jmdistributions/Hr/Controlador/PeriodoController',{
+                data:{
+                    id_empleado:this.id_empleado,
+                    id_periodo: this.id_periodo,
+                    function:'getCompromiso',
+                }
+            }).then(response =>{                                
+                if (typeof response.data[0] != 'undefined') {
+                    this.compromiso = response.data[0].compromiso;
                 }                                               
             });
         },
@@ -312,6 +327,24 @@ new Vue({
                 }else{
                     this.error('Error al guardar.')
                 }                       
+            });
+        },
+        addCompromiso: function (event) {
+            event.preventDefault();
+            axios.post('/jmdistributions/Hr/Controlador/PeriodoController',{
+                data:{
+                    id_periodo: this.id_periodo,
+                    id_empleado: this.id_empleado,
+                    compromiso: this.compromiso,
+                    function: 'compromiso',
+                }
+            }).then(response =>{                
+                if(response.data == 1 ){
+                    this.success('El compromiso se guardo.')
+                }else{
+                    this.error('Error al guardar.')
+                }
+                                      
             });
         },
         findRelacion(id){
