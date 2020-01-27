@@ -14,14 +14,17 @@ class Empleado
     public function getAllEmpleados(){
 
         $conn = $this->conn->conexion();
-        $sql = 'SELECT * FROM empleado';
+        $sql = "SELECT empleado.id_empleado,
+        CONCAT(empleado.nombre,' ',empleado.apellido_materno,' ', empleado.apellido_paterno) AS nombre
+        FROM empleado
+        WHERE activo = 1
+        ORDER BY nombre";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $empleados = $stmt->fetchAll(PDO::FETCH_OBJ);
 
-        return $empleados;
+        return json_encode($empleados);
     }
-    
     //Regresa todos los empleados por area
     public function getAllEmpleadosIdArea($id_area)
     {
@@ -222,7 +225,7 @@ class Empleado
         return json_encode($empleado);
     }
 
-        //Busca empleado por su clo
+        //Busca empleado por su clo y area
         public function findColaboradorClo($id_clo, $id_area)
         {
             $conn = $this->conn->conexion();
@@ -238,7 +241,22 @@ class Empleado
     
             return json_encode($empleados);
         }
+    //Busca los empleados por su id_clo
+    public function findEmpleadoIdClo($id_clo)
+    {
+        $conn = $this->conn->conexion();
+        $sql = "SELECT empleado.id_empleado,
+        CONCAT(empleado.nombre,' ',empleado.apellido_materno,' ', empleado.apellido_paterno) AS nombre
+        FROM empleado
+        WHERE empleado.id_clo = :id_clo AND empleado.activo = 1 AND NOT empleado.numero_empleado = ''
+        ORDER BY nombre ";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(":id_clo", $id_clo);
+        $stmt->execute();
+        $empleados = $stmt->fetchAll(PDO::FETCH_OBJ);
 
+        return json_encode($empleados);
+    }
     //Busca empleado por el id de usuario
     public function findEmpleado($id)
     {

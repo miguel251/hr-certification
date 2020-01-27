@@ -5,12 +5,17 @@ session_start();
 class EmpleadoController
 {
     //Regresa todos los empleados
+    public function indexEmpleados()
+    {
+        $empleados = new Empleado();
+        return $empleados->getAllEmpleados();
+    }
+    //Regresa todos los empleados del supervisor
     public function index()
     {
         $empleados = new Empleado();
         return $empleados->getColaboradores();
     }
-
     //Muestra un empleado por su id
     public function show($id){
         
@@ -77,6 +82,15 @@ class EmpleadoController
         $empleado = new Empleado();
         return $empleado->getAllSupervisor($id_periodo);
     }
+
+    public function findCloEmpleado($id_clo)
+    {
+        $empleado = new Empleado();
+        if($id_clo == 0){
+            return $empleado->getAllEmpleados();
+        }
+        return $empleado->findEmpleadoIdClo($id_clo);
+    }
 }
 
 
@@ -117,5 +131,13 @@ if($data['data']['function'] == 'buscar')
 }else if($data['data']['function'] == 'supervisor'){
 
     echo $function->getAllSupervisor($data['data']['id_periodo']);
+
+}else if($data['data']['function'] == 'empleados'){
+
+    echo $function->indexEmpleados();
+
+}else if($data['data']['function'] == 'empleadosIdClo'){
+
+    echo $function->findCloEmpleado($data['data']['id_clo']);
 
 }

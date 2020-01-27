@@ -42,7 +42,7 @@ class Periodo
     //Avance de objetivos asignados por periodo y todos los supervisores
     public function getAllAvanceIdPeriodo($id_periodo){
         $conn = $this->conn->conexion();
-        $sql = "SELECT  periodo.titulo, empleado.numero_empleado, CONCAT(empleado.nombre, ' ', empleado.apellido_paterno, ' ', empleado.apellido_materno) as empleado, CONCAT(supervisor.nombre, ' ', supervisor.apellido_paterno, ' ', supervisor.apellido_materno) as supervisor, periodo.activo, periodo_asignado.calificacion FROM periodo_asignado
+        $sql = "SELECT  periodo.titulo as periodo, empleado.numero_empleado, CONCAT(empleado.nombre, ' ', empleado.apellido_paterno, ' ', empleado.apellido_materno) as empleado, CONCAT(supervisor.nombre, ' ', supervisor.apellido_paterno, ' ', supervisor.apellido_materno) as supervisor,CASE WHEN periodo.activo = 1 THEN 'Abierto' ELSE 'Cerrado' END AS estatus, SUBSTRING(CONVERT(VARCHAR,periodo_asignado.calificacion), 1, 8) AS calificacion FROM periodo_asignado
         INNER JOIN periodo
         ON periodo.id_periodo = periodo_asignado.id_periodo
         INNER JOIN empleado
@@ -60,7 +60,7 @@ class Periodo
     //Avance de objetivos asignados por periodo con filtro de supervisor
     public function getAllAvanceIdSPeriodo($id_periodo, $id_supervisor){
         $conn = $this->conn->conexion();
-        $sql = "SELECT  periodo.titulo, empleado.numero_empleado, CONCAT(empleado.nombre, ' ', empleado.apellido_paterno, ' ', empleado.apellido_materno) as empleado, CONCAT(supervisor.nombre, ' ', supervisor.apellido_paterno, ' ', supervisor.apellido_materno) as supervisor, periodo.activo, periodo_asignado.calificacion FROM periodo_asignado
+        $sql = "SELECT  periodo.titulo as periodo, empleado.numero_empleado, CONCAT(empleado.nombre, ' ', empleado.apellido_paterno, ' ', empleado.apellido_materno) as empleado, CONCAT(supervisor.nombre, ' ', supervisor.apellido_paterno, ' ', supervisor.apellido_materno) as supervisor, CASE WHEN periodo.activo = 1 THEN 'Abierto' ELSE 'Cerrado' END AS estatus, SUBSTRING(CONVERT(VARCHAR,periodo_asignado.calificacion), 1, 8) AS calificacion FROM periodo_asignado
         INNER JOIN periodo
         ON periodo.id_periodo = periodo_asignado.id_periodo
         INNER JOIN empleado

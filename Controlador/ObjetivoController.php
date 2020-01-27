@@ -97,10 +97,14 @@ class ObjetivoController
         }else{//Calculo de menos es mejor
             $x = $valorReferencia - $resultadoEsperado;
             $y = $resultadoObtenido - $resultadoEsperado;
-
-            $porcentaje = (abs($y-$x))/$x;
-            $calificacion = $porcentaje * $ponderacion;
-            $calificacion = number_format($calificacion, 2, '.', '');
+            
+            if ($y > $x) {
+                $calificacion = 0;
+            }else{
+                $porcentaje = (abs($y-$x))/$x;
+                $calificacion = $porcentaje * $ponderacion;
+                $calificacion = number_format($calificacion, 2, '.', '');
+            }
         }
 
         if($calificacion > $ponderacion) //Trunca el valor no mayor de la ponderacion
