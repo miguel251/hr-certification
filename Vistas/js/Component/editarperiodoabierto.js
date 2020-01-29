@@ -231,17 +231,18 @@ new Vue({
                 
             });
         },
-        validateUpdate: function(e){
-            //Dependera del valor del id de la tabla relacion (mas es mejor-1 o menos es mejor-2)
+        validateUpdate: function(event){
+            //Dependera del valor del id de la tabla relacion (mas es mejor = 1 o menos es mejor = 2)
+            event.preventDefault();
             if(this.referencia > this.resultado && this.relacion == 1){
                 this.alert('El valor de referencia no puede ser mayor al resultado esperado');
+                return;
             }else if(this.referencia <= this.resultado && this.relacion == 2){
                 this.alert('El valor de referencia no puede ser menor o igual a resultado esperado');
+                return;
             }else{
                 this.updateObjective();
             }
-            
-         e.preventDefault();
         },
         updateObjective: function(){
             axios.post('/jmdistributions/Hr/Controlador/ObjetivoController',{
@@ -272,6 +273,12 @@ new Vue({
                  message,
                 'success'
               )
+        },
+        alert: function(message){
+            Swal.fire({
+                type: 'warning',
+                text: message,
+            })
         },
         error: function(message){
             Swal.fire({
