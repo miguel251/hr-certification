@@ -18,28 +18,29 @@ if(isset($_GET['id']))
     exit();
 }
 ?>
-<header class="container-fluid">
-    <div class="card">
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <button class="btn btn-primary" onclick="window.location='/jmdistributions/Inicio/home.php#15'">Menú principal</button>
-                <button class="btn btn-primary" onclick="window.location='/jmdistributions/Archivos/Colaboradores.php'">Menú anterior</button>
-            </div>
-        </div>
-    </div>
-</header>
-<main class="container-fluid">
-    <div class="card">
-        <h5><strong>Notas:</strong></h5>
-        <ul>
-            <li>Evalue de manera objetiva a sus colaboradores. De retroalimentación franca y asertiva.</li>
-            <li>Escuche sus observaciones y recomendaciones, comunmente cuando se les toma en cuenta se siente más comprometidos con los objetivos y los planes de mejora.</li>
-            <li>Es recomendable evaluar a sus colaboradores hasta que ellos se hayan hecho una autovaluación, con el fín de que pueden comparar ambas calificaciones.</li>
-        </ul>
-    </div>
-</main>
 <div class="container-fluid">
     <div id="evalua">
+    <header class="container-fluid">
+        <div class="card">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <button class="btn btn-primary" onclick="window.location='/jmdistributions/Inicio/home.php#15'">Menú principal</button>
+                    <button class="btn btn-primary" onclick="window.location='/jmdistributions/Archivos/Colaboradores.php'">Menú anterior</button>
+                    <button class="btn btn-primary">Exportar a pdf</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="container-fluid">
+        <div class="card">
+            <h5><strong>Notas:</strong></h5>
+            <ul>
+                <li>Evalue de manera objetiva a sus colaboradores. De retroalimentación franca y asertiva.</li>
+                <li>Escuche sus observaciones y recomendaciones, comunmente cuando se les toma en cuenta se siente más comprometidos con los objetivos y los planes de mejora.</li>
+                <li>Es recomendable evaluar a sus colaboradores hasta que ellos se hayan hecho una autovaluación, con el fín de que pueden comparar ambas calificaciones.</li>
+            </ul>
+        </div>
+    </main>
         <div align="center">
             <table>
                 <tbody>
