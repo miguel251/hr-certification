@@ -129,11 +129,11 @@ if(isset($_GET['id']))
                             </div>
                             <div class="col-3" v-if="relacion == 1">
                                 <label for="Resultado">Valor de referencia</label>
-                                <input type="text" class="form-control" v-model="referencia">
+                                <input type="number" class="form-control" step="0.01" v-model="referencia">
                             </div>
                             <div class="col-3" v-if="relacion == 2">
                                 <label for="Resultado">Valor de referencia <i class="far fa-question-circle" data-toggle="modal" data-target="#ModalInfo"></i></label>
-                                <input type="number" v-model="referencia" class="form-control">
+                                <input type="number" v-model="referencia" step="0.01" class="form-control">
                             </div>
                             <div class="col-4">
                                 <label for="Ponderación">Ponderación (%)</label>
@@ -218,11 +218,11 @@ if(isset($_GET['id']))
                             </div>
                             <div class="col-3" v-if="relacion == 1">
                                 <label for="Resultado">Valor de referencia</i></label>
-                                <input type="text" class="form-control" v-model="referencia">
+                                <input type="number" class="form-control" step="0.01" v-model="referencia">
                             </div>
                             <div class="col-3" v-if="relacion == 2">
                                 <label for="Resultado">Valor de referencia <i class="far fa-question-circle" data-toggle="modal" data-target="#ModalInfo"></i></label>
-                                <input type="number" v-model="referencia" class="form-control">
+                                <input type="number" v-model="referencia" step="0.01" class="form-control">
                             </div>
                             <div class="col-4">
                                 <label for="Ponderación">Ponderación (%)</label>

@@ -59,7 +59,7 @@ if(isset($_GET['id']))
                     <tr class="table-light" v-for="objetivo in objetivos">
                         <td>{{objetivo.descripcion}}</td>
                         <td>{{objetivo.ponderacion + '%'}}</td>
-                        <td>{{objetivo.resultado_esperado}}</td>
+                        <td>{{Number(objetivo.resultado_esperado)}}</td>
                         <td>{{objetivo.valor_obtenido != null ? objetivo.valor_obtenido : '0'}}</td>
                         <td>{{objetivo.valor_sugerencia != null ? objetivo.valor_sugerencia : '0'}}</td>
                         <td>{{objetivo.unidad}}</td>
@@ -113,11 +113,11 @@ if(isset($_GET['id']))
                             </div>
                             <div class="col-3" v-if="relacion == 1">
                                 <label for="Resultado">Valor de referencia</i></label>
-                                <input type="text" class="form-control" v-model="referencia">
+                                <input type="text" class="form-control" step="0.01" v-model="referencia">
                             </div>
                             <div class="col-3" v-if="relacion == 2">
                                 <label for="Resultado">Valor de referencia <i class="far fa-question-circle" data-toggle="modal" data-target="#ModalInfo"></i></label>
-                                <input type="number" v-model="referencia" class="form-control">
+                                <input type="number" v-model="referencia" step="0.01" class="form-control">
                             </div>
                             <div class="col-4">
                                 <label for="Ponderación">Ponderación (%)</label>

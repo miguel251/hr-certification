@@ -165,7 +165,7 @@ new Vue({
             }).then((response) =>{
                 this.getAllData();                
                 this.descripcion = response.data[0].descripcion;
-                this.resultado = response.data[0].resultado_esperado;
+                this.resultado = Number(response.data[0].resultado_esperado);
                 this.unidad = response.data[0].id_unidad;
                 this.relacion = response.data[0].id_relacion;
                 this.ponderacion = response.data[0].ponderacion;
@@ -173,7 +173,7 @@ new Vue({
                 this.balanced = response.data[0].id_balance;
                 this.objetivo = response.data[0].id_alineacion;
                 this.id_objetivo = response.data[0].id_objetivo;
-                this.referencia = response.data[0].valor_referencia;
+                this.referencia = Number(response.data[0].valor_referencia);
                 this.comentario = response.data[0].comentario_supervisor;
                 
             });

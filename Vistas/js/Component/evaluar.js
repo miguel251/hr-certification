@@ -388,6 +388,25 @@ new Vue({
                 this.userPass = response.data[0].contrasena;
             });
         },
+        generarPdf:function () {
+            axios({
+                method: 'post',
+                url: '/jmdistributions/Hr/Controlador/PdfController',
+                data: {
+                    function:'pdf_objetivos'
+                },
+                responseType: 'blob',
+              }).then(response =>{   
+                 console.log(response.data);
+                                      
+                 const url = window.URL.createObjectURL(new Blob([response.data]));
+                 const link = document.createElement('a');
+                 link.href = url;
+                 link.setAttribute('download', 'file.pdf');
+                 document.body.appendChild(link);
+                 link.click();
+              });  
+        },
         evaluarConducta:function () {
             axios.post('/jmdistributions/Hr/Controlador/PuestoController',{
                 data:{

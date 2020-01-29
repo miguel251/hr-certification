@@ -26,7 +26,6 @@ if(isset($_GET['id']))
                 <div class="col-sm-12 text-center">
                     <button class="btn btn-primary" onclick="window.location='/jmdistributions/Inicio/home.php#15'">Menú principal</button>
                     <button class="btn btn-primary" onclick="window.location='/jmdistributions/Archivos/Colaboradores.php'">Menú anterior</button>
-                    <button class="btn btn-primary">Exportar a pdf</button>
                 </div>
             </div>
         </div>
@@ -80,9 +79,9 @@ if(isset($_GET['id']))
                     <tr class="table-light" v-for="objetivo in objetivos">
                         <td>{{objetivo.descripcion}}</td>
                         <td>{{objetivo.ponderacion + '%'}}</td>
-                        <td>{{objetivo.resultado_esperado}}</td>
+                        <td>{{Number(objetivo.resultado_esperado)}}</td>
                         <td>{{objetivo.valor_obtenido != null ? objetivo.valor_obtenido : '0'}}</td>
-                        <td>{{objetivo.valor_sugerencia != null ? objetivo.valor_sugerencia : '0'}}</td>
+                        <td>{{objetivo.valor_sugerencia != null ? Number(objetivo.valor_sugerencia) : '0'}}</td>
                         <td>{{objetivo.unidad}}</td>
                         <td class="td-font">{{objetivo.balanced}}</td>
                         <td>{{objetivo.fecha_entrega}}</td>
@@ -242,7 +241,7 @@ if(isset($_GET['id']))
                     <div class="row">
                         <div class="col-6">
                             <label for="Resultado">Resultado esperado</label>
-                            <input type="text" v-model="resultadoEsperado" class="form-control" disabled>
+                            <input type="text" v-model="Number(resultadoEsperado)" class="form-control" disabled>
                         </div>
                         <div class="col-6">
                             <label for="Resultado">Unidad de medición</label>
@@ -254,11 +253,11 @@ if(isset($_GET['id']))
                         </div>
                         <div class=" col-6">
                             <label for="descripcion">Valor de referencia</label>
-                            <input type="text" :value="valorReferencia"  disabled class="form-control">
+                            <input type="text" :value="Number(valorReferencia)"  disabled class="form-control">
                         </div>
                         <div class="col-6">
                             <label for="Resultado">Resultado sugerido</label>
-                            <input type="text" v-model="resultadoSugerido" class="form-control" disabled>
+                            <input type="text" v-model="Number(resultadoSugerido)" class="form-control" disabled>
                         </div>
                         <div class="col-6">
                             <label for="Resultado">Valor obtenido</label>

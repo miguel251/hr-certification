@@ -209,7 +209,7 @@ Vue.component('modal', {
                 this.balanced = response.data[0].id_balance;
                 this.objetivo = response.data[0].id_alineacion;
                 this.id_objetivo = response.data[0].id_objetivo;
-                this.referencia = response.data[0].valor_referencia;
+                this.referencia = Number(response.data[0].valor_referencia);
                 this.comentario = response.data[0].comentario_supervisor;
                 
             });
